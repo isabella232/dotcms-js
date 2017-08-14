@@ -4,6 +4,8 @@
 /dist
 /tmp
 /out-tsc
+/ngc-out
+/build-dotcms-js
 
 # dependencies
 /node_modules
