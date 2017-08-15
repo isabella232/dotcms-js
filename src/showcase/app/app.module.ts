@@ -2,7 +2,6 @@ import {BrowserModule}  from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpModule, JsonpModule} from '@angular/http';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
-import {Logger, LOG_LOGGER_PROVIDERS, Options as LoggerOptions, Level as LoggerLevel} from 'angular2-logger/core';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
@@ -15,7 +14,6 @@ import {
     HttpClient,
     JWTAuthService,
     LocalStoreService,
-    LoggerService,
     NotificationService,
     SettingsStorageService,
     SiteBrowserService,
@@ -71,7 +69,6 @@ import {TieredMenuModule, CodeHighlighterModule} from 'primeng/primeng';
         routing,
     ],
     providers: [
-        Logger,
         {provide: HttpClient, useClass: HttpClient},
         {provide: AppConfig, useValue: AppConfig},
         {provide: NotificationService, useClass: NotificationService},
@@ -79,8 +76,6 @@ import {TieredMenuModule, CodeHighlighterModule} from 'primeng/primeng';
         {provide: SiteTreetableService, useClass: SiteTreetableService},
         {provide: SiteBrowserService, useClass: SiteBrowserService},
         {provide: SiteSelectorService, useClass: SiteSelectorService},
-        {provide: LoggerOptions, useValue: { level: LoggerLevel.INFO } },
-        {provide: LoggerService, useClass: LoggerService},
         {provide: JWTAuthService, useClass: JWTAuthService},
         {provide: SiteBrowserState, useClass: SiteBrowserState},
         {provide: SettingsStorageService, useClass: SettingsStorageService},

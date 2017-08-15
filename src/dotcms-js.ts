@@ -4,7 +4,6 @@ export * from './core/util/file.services';
 export * from './core/util/http.service';
 export * from './core/util/jwt-auth.service';
 export * from './core/util/local-store.service';
-export * from './core/util/logger.service';
 export * from './core/util/notification.service';
 export * from './core/util/settings-storage.service';
 export * from './core/util/site-browser.service';

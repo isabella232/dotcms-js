@@ -2,7 +2,6 @@ import {Component, NgModule} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Treeable} from '../../core/treeable/shared/treeable.model';
 import {SiteBrowserState} from '../../core/util/site-browser.state';
-import {LoggerService} from '../../core/util/logger.service';
 import {SiteBrowserService} from '../../core/util/site-browser.service';
 import {SettingsStorageService} from '../../core/util/settings-storage.service';
 import {NotificationService} from '../../core/util/notification.service';
@@ -25,7 +24,7 @@ import {Site} from '../../core/treeable/shared/site.model';
         <p-dataTable [value]="treeables" selectionMode="single"
                      (onRowDblclick)="doubleClick($event)" (onRowSelect)="selectTreeable($event)">
             <p-column class="browser-dropzone" field="title" header="Name" [sortable]="true">
-                <template let-col let-treeable="rowData" pTemplate type="body">
+                <ng-template let-col let-treeable="rowData" pTemplate type="body">
                 <span [ngSwitch]="treeable.type">
                     <span *ngSwitchCase="'folder'" class="{{treeable.type=='folder' ? 'fa fa-folder aria-hidden=true':''}}"></span>
                     <span *ngSwitchCase="'file_asset'">
@@ -34,26 +33,26 @@ import {Site} from '../../core/treeable/shared/site.model';
                     </span>
                 </span>
                     <span>{{treeable.title}}</span>
-                </template>
+                </ng-template>
             </p-column>
             <p-column field="type" header="Type" [sortable]="true" [style]="{'width':'100px'}">
-                <template let-col let-treeable="rowData" pTemplate type="body">
+                <ng-template let-col let-treeable="rowData" pTemplate type="body">
                     <span>{{treeable.displayType}}</span>
-                </template>
+                </ng-template>
             </p-column>
             <p-column field="live" header="Status" [style]="{'width':'70px'}">
-                <template let-col let-treeable="rowData" pTemplate type="body">
+                <ng-template let-col let-treeable="rowData" pTemplate type="body">
                     <div *ngIf="treeable.type=='file_asset'">
                         <span *ngIf="treeable.live" class="liveIcon"></span>
                         <span *ngIf="!treeable.live" class="workingIcon"></span>
                     </div>
-                </template>
+                </ng-template>
             </p-column>
             <p-column field="modUserName" header="Editor" [sortable]="true" [style]="{'width':'150px'}"></p-column>
             <p-column field="modDate" header="Modified" [sortable]="true" [style]="{'width':'200px'}">
-                <template let-col let-treeable="rowData" pTemplate type="body">
+                <ng-template let-col let-treeable="rowData" pTemplate type="body">
                     <span>{{treeable.modDate | date: 'MM/dd/yy hh:mm:ss a'}}</span>
-                </template>
+                </ng-template>
             </p-column>
         </p-dataTable>
     </div>`
@@ -66,7 +65,6 @@ export class SiteDatatableComponent {
 
     constructor(private updateService: SiteBrowserState,
                 private fileService: FileService,
-                private log: LoggerService,
                 private siteBrowserService: SiteBrowserService,
                 private settingsStorageService: SettingsStorageService,
                 private messageService: NotificationService) {
@@ -157,10 +155,6 @@ export class SiteDatatableComponent {
         let fileName: string =  e.dataTransfer.files[0].name;
         let files: File[] = e.dataTransfer.files;
         let folderTitle: string = e.path[0].innerText.trim();
-        this.log.debug('dataTrans = ' + dataTrans);
-        this.log.debug('folderTitle = ' + folderTitle);
-        this.log.debug('files = ' + files);
-        this.log.debug('file name = ' + fileName);
         for (let i = 0; i < this.treeables.length; i++) {
             let node: Treeable = this.treeables[i];
             if (node.title === folderTitle && node.type === 'folder') {
@@ -172,11 +166,10 @@ export class SiteDatatableComponent {
         for (let i = 0; i < files.length; i++) {
             let file: File = files[i];
             if (fileContentTypeID == null || fileContentTypeID.trim() === '') {
-                this.log.error('st inode is empty');
+                console.error('st inode is empty');
             }
             this.fileService.uploadFile(file, pathToUploadTo, fileContentTypeID);
         }
-        this.log.debug('Path 4: ' + pathToUploadTo);
         this.messageService.displayInfoMessage('Path is ' + pathToUploadTo);
         return;
     }

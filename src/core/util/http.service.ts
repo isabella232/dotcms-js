@@ -7,7 +7,6 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/debounceTime';
 
 import {SettingsStorageService} from './settings-storage.service';
-import {LoggerService} from './logger.service';
 
 /**
  * The HTTPClient will use the JWTToken and Host/Site set in the SettingsStorageService to connect dotCMS REST Endpoints
@@ -15,7 +14,6 @@ import {LoggerService} from './logger.service';
  */
 @Injectable()
 @Inject('http')
-@Inject('log')
 @Inject('settingsStorageService')
 export class HttpClient {
     public progress$: any;
@@ -23,7 +21,6 @@ export class HttpClient {
     private progress: number;
     constructor(
         private http: Http,
-        private log: LoggerService,
         private settingsStorageService: SettingsStorageService
 
     ) {
@@ -106,7 +103,6 @@ export class HttpClient {
             let formData: FormData = new FormData(), xhr: XMLHttpRequest = new XMLHttpRequest();
             formData.append('json', JSON.stringify(data));
 
-            this.log.debug('File to push is : ' + file.name);
             formData.append('fileAsset', file);
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === 4) {
@@ -130,7 +126,7 @@ export class HttpClient {
                 && this.settingsStorageService.getSettings().jwt.trim().length > 0 ) {
                 xhr.setRequestHeader('Authorization', 'Bearer ' + this.settingsStorageService.getSettings().jwt);
             }
-            this.log.debug('FormData is ' + formData);
+            console.log('FormData is ' + formData);
             xhr.send(formData);
         });
     }

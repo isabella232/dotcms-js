@@ -1,6 +1,5 @@
 import {Inject, Injectable} from '@angular/core';
 import {NotificationService} from './notification.service';
-import {LoggerService} from './logger.service';
 import {Http, Headers, Response, RequestMethod, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs';
 import {SettingsStorageService} from './settings-storage.service';
@@ -13,7 +12,6 @@ import 'rxjs/add/operator/map';
 @Injectable()
 @Inject('http')
 @Inject('notificationService')
-@Inject('log')
 @Inject('settingsStorageService')
 export class JWTAuthService {
 
@@ -21,7 +19,6 @@ export class JWTAuthService {
     (
         private http: Http,
         private notificationService: NotificationService,
-        private log: LoggerService,
         private settingsStorageService: SettingsStorageService
     ) {}
 
@@ -82,7 +79,7 @@ export class JWTAuthService {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         if (errMsg) {
-            this.log.error(errMsg);
+            console.error(errMsg);
             this.notificationService.displayErrorMessage('There was an error; please try again : ' + errMsg);
             return Observable.throw(errMsg);
         }

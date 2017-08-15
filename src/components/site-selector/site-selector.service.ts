@@ -5,18 +5,15 @@ import {HttpClient} from '../../core/util/http.service';
 import {NotificationService} from '../../core/util/notification.service';
 import {Site} from '../../core/treeable/shared/site.model';
 import {ErrorObservable} from 'rxjs/observable/ErrorObservable';
-import {LoggerService} from '../../core/util/logger.service';
 
 @Injectable()
 @Inject('dotHttpClient')
-@Inject('log')
 @Inject('notificationService')
 export class SiteSelectorService {
 
     constructor
     (
         private dotHttpClient: HttpClient,
-        private log: LoggerService,
         private notificationService: NotificationService
     ) {}
 
@@ -59,7 +56,7 @@ export class SiteSelectorService {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         if (errMsg) {
-            this.log.error(errMsg);
+            console.log(errMsg);
             this.notificationService.displayErrorMessage('There was an error; please try again : ' + errMsg);
             return Observable.throw(errMsg);
         }

@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {NotificationService} from './notification.service';
-import {LoggerService} from './logger.service';
 import {HttpClient} from './http.service';
 import {Observable} from 'rxjs';
 import {SiteBrowserState} from './site-browser.state';
@@ -14,7 +13,6 @@ export class FileService {
     constructor
     (private httpClient: HttpClient,
      private siteBrowserState: SiteBrowserState,
-     private loggerService: LoggerService,
      private notificationService: NotificationService) {
     }
 
@@ -65,7 +63,7 @@ export class FileService {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         if (errMsg) {
-            this.loggerService.error(errMsg);
+            console.log(errMsg);
             this.notificationService.displayErrorMessage('There was an error uploading file; please try again : ' + errMsg);
             return Observable.throw(errMsg);
         }

@@ -7,7 +7,6 @@ import {Folder} from '../treeable/shared/folder.model';
 import {File} from '../treeable/shared/file.model';
 import {NotificationService} from './notification.service';
 import {ErrorObservable} from 'rxjs/observable/ErrorObservable';
-import {LoggerService} from '../../core/util/logger.service';
 
 /**
  * SiteBrowserService will allows operations against the set dotCMS Site/Host for Tree operations. Treeable assets
@@ -16,14 +15,12 @@ import {LoggerService} from '../../core/util/logger.service';
 @Injectable()
 @Inject('httpClient')
 @Inject('notificationService')
-@Inject('log')
 export class SiteBrowserService {
 
     constructor
     (
         private httpClient: HttpClient,
-        private notificationService: NotificationService,
-        private log: LoggerService
+        private notificationService: NotificationService
     ) {}
 
     /**
@@ -70,7 +67,7 @@ export class SiteBrowserService {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         if (errMsg) {
-            this.log.error(errMsg);
+            console.error(errMsg);
             this.notificationService.displayErrorMessage('There was an error; please try again : ' + errMsg);
             return Observable.throw(errMsg);
         }

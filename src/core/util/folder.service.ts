@@ -1,6 +1,5 @@
 import {HttpClient} from './http.service';
 import {NotificationService} from './notification.service';
-import {LoggerService} from '../../core/util/logger.service';
 import {Response} from '@angular/http';
 import {Inject, Injectable} from '@angular/core';
 import {Folder} from '../treeable/shared/folder.model';
@@ -13,13 +12,11 @@ import {ErrorObservable} from 'rxjs/observable/ErrorObservable';
 @Injectable()
 @Inject('httpClient')
 @Inject('notificationService')
-@Inject('log')
 export class FolderService {
     constructor
     (
         private httpClient: HttpClient,
-        private notificationService: NotificationService,
-        private log: LoggerService
+        private notificationService: NotificationService
     ) {}
 
     /**
@@ -44,7 +41,7 @@ export class FolderService {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         if (errMsg) {
-            this.log.error(errMsg);
+            console.log(errMsg);
             this.notificationService.displayErrorMessage('There was an error; please try again : ' + errMsg);
             return Observable.throw(errMsg);
         }

@@ -4,8 +4,6 @@ import {MockBackend, MockConnection} from '@angular/http/testing';
 
 import {JWTAuthService} from './jwt-auth.service';
 import {LocalStoreService} from './local-store.service';
-import {LoggerService} from './logger.service';
-import {Logger} from 'angular2-logger/core';
 import {NotificationService} from './notification.service';
 import {SettingsStorageService} from './settings-storage.service';
 import {SiteBrowserState} from './site-browser.state';
@@ -18,7 +16,6 @@ describe('JWT Auth Service', () => {
             providers: [
                 BaseRequestOptions,
                 MockBackend,
-                Logger,
                 {
                     deps: [MockBackend, BaseRequestOptions],
                     provide: Http,
@@ -28,7 +25,6 @@ describe('JWT Auth Service', () => {
                 },
                 {provide: AppConfig, useValue: AppConfig},
                 {provide: JWTAuthService, useClass: JWTAuthService},
-                {provide: LoggerService, useClass: LoggerService},
                 {provide: NotificationService, useClass: NotificationService},
                 {provide: SettingsStorageService, useClass: SettingsStorageService},
                 {provide: LocalStoreService, useClass: LocalStoreService},

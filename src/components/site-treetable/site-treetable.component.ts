@@ -3,7 +3,6 @@ import {Message, TreeNode} from 'primeng/components/common/api';
 import {Subscription} from 'rxjs';
 import {SiteTreetableService} from './site-treetable.service';
 import {SiteBrowserState} from '../../core/util/site-browser.state';
-import {LoggerService} from '../../core/util/logger.service';
 import {NotificationService} from '../../core/util/notification.service';
 import {CommonModule} from '@angular/common';
 import {TreeTableModule} from 'primeng/components/treetable/treetable';
@@ -23,7 +22,6 @@ import {Site} from '../../core/treeable/shared/site.model';
     </div>`
 })
 
-@Inject('log')
 @Inject('updateService')
 export class SiteTreeTableComponent {
 
@@ -35,7 +33,6 @@ export class SiteTreeTableComponent {
     subscription: Subscription;
 
     constructor(private updateService: SiteBrowserState,
-                private log: LoggerService,
                 private siteTreetableService: SiteTreetableService,
                 private messageService: NotificationService) {
 
@@ -78,7 +75,6 @@ export class SiteTreeTableComponent {
                 break;
             }
         }
-        this.log.debug('Path 2: ' + pathToUploadTo);
         this.messageService.displayInfoMessage('Path is ' + pathToUploadTo);
         return;
     }
@@ -100,10 +96,8 @@ export class SiteTreeTableComponent {
      * @param uri
      */
     loadFolder(uri: string): void {
-        this.log.debug('loading folder with URI : ' + uri);
         this.siteTreetableService.getAssetsUnderFolder(this.site.hostname, uri)
             .subscribe(items => this.lazyFiles = items);
-        this.log.debug('done loading folder with URI : ' + uri);
         setTimeout(() => {
         }, 100);
     }
