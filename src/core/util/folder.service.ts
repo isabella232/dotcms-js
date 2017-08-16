@@ -1,7 +1,7 @@
 import {HttpClient} from './http.service';
 import {NotificationService} from './notification.service';
 import {Response} from '@angular/http';
-import {Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, NgModule} from '@angular/core';
 import {Folder} from '../treeable/shared/folder.model';
 import {Observable} from 'rxjs/Observable';
 import {ErrorObservable} from 'rxjs/observable/ErrorObservable';
@@ -47,3 +47,8 @@ export class FolderService {
         }
     }
 }
+
+@NgModule({
+  providers: [FolderService, HttpClient, NotificationService]
+})
+export class DotFolderModule { }

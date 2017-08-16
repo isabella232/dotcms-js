@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgModule} from '@angular/core';
 import {NotificationService} from './notification.service';
 import {HttpClient} from './http.service';
 import {Observable} from 'rxjs';
@@ -70,3 +70,8 @@ export class FileService {
     }
 
 }
+
+@NgModule({
+  providers: [HttpClient, SiteBrowserState, NotificationService, FileService]
+})
+export class DotFileModule { }

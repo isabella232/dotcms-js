@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, NgModule} from '@angular/core';
 import {NotificationService} from './notification.service';
 import {Http, Headers, Response, RequestMethod, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs';
@@ -86,3 +86,8 @@ export class JWTAuthService {
     }
 
 }
+
+@NgModule({
+  providers: [JWTAuthService, Http, NotificationService, SettingsStorageService]
+})
+export class DotJWTAuthModule {}

@@ -142,6 +142,7 @@ export class SiteTreeTableComponent {
 @NgModule({
     declarations: [SiteTreeTableComponent],
     exports: [SiteTreeTableComponent],
-    imports: [CommonModule, TreeTableModule]
+    imports: [CommonModule, TreeTableModule],
+    providers: [SiteBrowserState, SiteTreetableService, NotificationService]
 })
-export class DotcmsSiteTreeTableModule { }
+export class DotSiteTreeTableModule { }

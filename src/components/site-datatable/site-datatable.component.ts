@@ -179,6 +179,7 @@ export class SiteDatatableComponent {
 @NgModule({
     declarations: [SiteDatatableComponent],
     exports: [SiteDatatableComponent],
-    imports: [CommonModule, DataTableModule]
+    imports: [CommonModule, DataTableModule],
+    providers: [SiteBrowserState, FileService, SiteBrowserService, SettingsStorageService, NotificationService]
 })
-export class DotcmsSiteDatatableModule { }
+export class DotSiteDatatableModule { }

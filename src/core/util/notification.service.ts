@@ -1,5 +1,5 @@
 import {AppConfig} from '../app.config';
-import {Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, NgModule} from '@angular/core';
 
 /**
  * Used by the NotificationService to set Desktop Notifications
@@ -63,4 +63,10 @@ export class NotificationService {
             icon : this.iconPath + '/' + type + '.png'
         });
     }
+}
+
+@NgModule({
+  providers: [AppConfig, NotificationService]
+})
+export class DotNotificationModule {
 }

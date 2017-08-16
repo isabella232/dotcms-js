@@ -84,6 +84,7 @@ export class SiteSelectorComponent {
 @NgModule({
     declarations: [SiteSelectorComponent],
     exports: [SiteSelectorComponent],
-    imports: [CommonModule, FormsModule, InputTextModule, AutoCompleteModule]
+    imports: [CommonModule, FormsModule, InputTextModule, AutoCompleteModule],
+    providers: [SiteBrowserState, SiteSelectorService]
 })
-export class DotcmsSiteSelectorModule { }
+export class DotSiteSelectorModule { }

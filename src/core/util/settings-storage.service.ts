@@ -1,7 +1,7 @@
 import {LocalStoreService} from './local-store.service';
 import {DotSettings} from './settings.model';
 import {AppConfig} from '../app.config';
-import {Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, NgModule} from '@angular/core';
 import {SiteBrowserState} from './site-browser.state';
 
 /**
@@ -50,4 +50,10 @@ export class SettingsStorageService {
         this.localStoreService.clearValue(this.configKey);
     }
 
+}
+
+@NgModule({
+  providers: [AppConfig, LocalStoreService, SiteBrowserState, SettingsStorageService]
+})
+export class DotSettingsStorageModule {
 }

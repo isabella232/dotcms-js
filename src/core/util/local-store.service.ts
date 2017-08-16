@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgModule} from '@angular/core';
 
 /**
  * LocalStoreService. Basic wraper for localStorage
@@ -41,3 +41,8 @@ export class LocalStoreService {
         localStorage.clear();
     }
 }
+
+@NgModule({
+  providers: [LocalStoreService]
+})
+export class DotLocalStoreModule {}

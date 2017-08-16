@@ -106,5 +106,6 @@ export class TreeableDetailComponent {
     declarations: [TreeableDetailComponent],
     exports: [TreeableDetailComponent],
     imports: [CommonModule, FormsModule, InputTextModule],
+    providers: [SiteBrowserState, SettingsStorageService]
 })
-export class DotcmsTreeableDetailModule { }
+export class DotTreeableDetailModule { }

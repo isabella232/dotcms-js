@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, NgModule} from '@angular/core';
 import {Http, Headers, Response, RequestMethod, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs';
 
@@ -131,3 +131,8 @@ export class HttpClient {
         });
     }
 }
+
+@NgModule({
+  providers: [HttpClient, SettingsStorageService]
+})
+export class DotHttpModule { }

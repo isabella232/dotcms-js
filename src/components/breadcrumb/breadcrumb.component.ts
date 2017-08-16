@@ -108,6 +108,7 @@ export class BreadcrumbComponent {
 @NgModule({
     declarations: [BreadcrumbComponent],
     exports: [BreadcrumbComponent],
-    imports: [CommonModule, BreadcrumbModule]
+    imports: [CommonModule, BreadcrumbModule],
+    providers: [SiteBrowserState]
 })
-export class DotcmsBreadcrumbModule { }
+export class DotBreadcrumbModule { }

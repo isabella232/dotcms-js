@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, NgModule} from '@angular/core';
 import {Response} from '@angular/http';
 import {HttpClient} from './http.service';
 import {Observable} from 'rxjs';
@@ -7,6 +7,7 @@ import {Folder} from '../treeable/shared/folder.model';
 import {File} from '../treeable/shared/file.model';
 import {NotificationService} from './notification.service';
 import {ErrorObservable} from 'rxjs/observable/ErrorObservable';
+import {SiteBrowserState} from './site-browser.state';
 
 /**
  * SiteBrowserService will allows operations against the set dotCMS Site/Host for Tree operations. Treeable assets
@@ -72,4 +73,10 @@ export class SiteBrowserService {
             return Observable.throw(errMsg);
         }
     }
+}
+
+@NgModule({
+  providers: [SiteBrowserService, HttpClient, NotificationService, SiteBrowserState]
+})
+export class DotSiteBrowserModule {
 }
