@@ -74,7 +74,7 @@ export class BreadcrumbComponent {
                 this.updateService.changeFolder(null);
                 setTimeout(() => {
                 }, 100);
-            }, label: site.hostname
+            }, label: site ? site.hostname : ''
         });
     }
 
