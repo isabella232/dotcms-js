@@ -1,8 +1,8 @@
-import {LocalStoreService} from './local-store.service';
-import {DotSettings} from './settings.model';
-import {AppConfig} from '../app.config';
-import {Inject, Injectable, NgModule} from '@angular/core';
-import {SiteBrowserState} from './site-browser.state';
+import { LocalStoreService } from './local-store.service';
+import { DotSettings } from './settings.model';
+import { AppConfig } from './app.config';
+import { Inject, Injectable, NgModule } from '@angular/core';
+import { SiteBrowserState } from './site-browser.state';
 
 /**
  * Stores and returns the DotSettings class
@@ -12,7 +12,6 @@ import {SiteBrowserState} from './site-browser.state';
 @Inject('localStoreService')
 @Inject('siteBrowserState')
 export class SettingsStorageService {
-
     configKey: string;
 
     constructor(
@@ -37,7 +36,7 @@ export class SettingsStorageService {
      * @param JWT
      */
     storeSettings(siteURL: string, JWT: string): void {
-        let dSettings: DotSettings = new DotSettings();
+        const dSettings: DotSettings = new DotSettings();
         dSettings.site = siteURL;
         dSettings.jwt = JWT;
         this.localStoreService.storeValue(this.configKey, JSON.stringify(dSettings));
@@ -49,11 +48,9 @@ export class SettingsStorageService {
     clearSettings(): void {
         this.localStoreService.clearValue(this.configKey);
     }
-
 }
 
 @NgModule({
-  providers: [AppConfig, LocalStoreService, SiteBrowserState, SettingsStorageService]
+    providers: [AppConfig, LocalStoreService, SiteBrowserState, SettingsStorageService]
 })
-export class DotSettingsStorageModule {
-}
+export class DotSettingsStorageModule {}
