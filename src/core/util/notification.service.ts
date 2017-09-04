@@ -1,11 +1,11 @@
-import {AppConfig} from '../app.config';
-import {Inject, Injectable, NgModule} from '@angular/core';
+import { AppConfig } from './app.config';
+import { Inject, Injectable, NgModule } from '@angular/core';
 
 /**
  * Used by the NotificationService to set Desktop Notifications
  */
 declare class Notification {
-    constructor(title: string, options?: Object)
+    constructor(title: string, options?: Object);
 }
 
 /**
@@ -16,13 +16,9 @@ declare class Notification {
 @Injectable()
 @Inject('config')
 export class NotificationService {
-
     iconPath: string;
 
-    constructor
-    (
-        private config: AppConfig
-    ) {
+    constructor(private config: AppConfig) {
         this.iconPath = config.iconPath;
     }
 
@@ -60,13 +56,12 @@ export class NotificationService {
         let myNotification: Notification;
         myNotification = new Notification(type, {
             body: body,
-            icon : this.iconPath + '/' + type + '.png'
+            icon: this.iconPath + '/' + type + '.png'
         });
     }
 }
 
 @NgModule({
-  providers: [AppConfig, NotificationService]
+    providers: [AppConfig, NotificationService]
 })
-export class DotNotificationModule {
-}
+export class DotNotificationModule {}
