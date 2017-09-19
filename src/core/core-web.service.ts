@@ -71,7 +71,7 @@ export class CoreWebService {
             .catch((response: Response, original: Observable<any>): Observable<any> => {
                 if (response) {
                     this.handleHttpError(response);
-                    if (response.status === HttpCode.SERVER_ERROR) {
+                    if (response.status === HttpCode.SERVER_ERROR || response.status === HttpCode.FORBIDDEN) {
                         if (response.text() && response.text().indexOf('ECONNREFUSED') >= 0) {
                             throw new CwError(
                                 NETWORK_CONNECTION_ERROR,
