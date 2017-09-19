@@ -44,10 +44,6 @@ export class LoginService {
             userAuth: 'v1/authentication'
         };
 
-        coreWebService
-            .subscribeTo(HttpCode.UNAUTHORIZED)
-            .subscribe(() => this.logOutUser().subscribe(() => {}));
-
         // when the session is expired/destroyed
         dotcmsEventsService.subscribeTo('SESSION_DESTROYED').pluck('data').subscribe(date => {
             this.loggerService.debug('Processing session destroyed: ', date);
@@ -206,7 +202,9 @@ export class LoginService {
                 };
 
                 this.setAuth(auth);
-
+                this.coreWebService
+                    .subscribeTo(HttpCode.UNAUTHORIZED)
+                    .subscribe(() => this.logOutUser().subscribe(() => {}));
                 return response.entity;
             });
     }

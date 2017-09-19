@@ -125,19 +125,19 @@ export class CoreWebService {
     public requestView(options: RequestOptionsArgs): Observable<ResponseView> {
         const request = this.getRequestOpts(options);
 
-        return this._http.request(request).map(
-            resp => {
+        return this._http.request(request)
+            .map(resp => {
                 if (resp.json().errors && resp.json().errors.length > 0) {
-                    throw new ResponseView(resp);
+                    return this.handleRequestViewErrors(resp);
                 } else {
                     return new ResponseView(resp);
                 }
-            },
-            resp => {
-                this.handleHttpError(resp);
-                throw new ResponseView(resp);
-            }
-        );
+            })
+            .catch(this.handleRequestViewErrors);
+    }
+
+    private handleRequestViewErrors(resp) {
+        return Observable.throw(new ResponseView(resp));
     }
 
     public subscribeTo(httpErrorCode: number): Observable<any> {
