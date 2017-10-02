@@ -72,13 +72,11 @@ export class LoginService {
     }
 
     get isLogin$(): Observable<boolean> {
-        return Observable.create(obs => {
-            if (this.auth && this.auth.user) {
-                obs.next(true);
-            } else {
-                this.loadAuth().subscribe(auth => obs.next(auth.user !== null));
-            }
-        });
+        return Observable.if(
+            () => !!this.auth && !!this.auth.user,
+            Observable.of(true),
+            this.loadAuth().map(auth => !!auth && !!auth.user)
+        );
     }
 
     /**
@@ -92,14 +90,14 @@ export class LoginService {
                 url: this.urls.getAuth
             })
             .pluck('entity')
-            .map(data => {
-                const auth = <Auth>data;
-
+            .do((auth: Auth) => {
                 if (auth.user) {
                     this.setAuth(auth);
                 }
-                return auth;
-            });
+            })
+            .map((auth: Auth) => auth);
+
+
     }
 
     /**
@@ -108,8 +106,6 @@ export class LoginService {
      * @param token
      * @returns {Observable<any>}
      */
-    // TODO: is a common practice in JavaScript that when there is more than 2 params change it to a Object:
-    // params.login, params.password and params.token in this case.
     public changePassword(password: string, token: string): Observable<any> {
         const body = JSON.stringify({ password: password, token: token });
 
