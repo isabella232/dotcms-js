@@ -21,6 +21,7 @@ const DOTCMS_WEBSOCKET_PROTOCOL = 'dotcms.websocket.protocol';
 const DOTCMS_DISABLE_WEBSOCKET_PROTOCOL = 'dotcms.websocket.disable';
 const DOTCMS_PAGINATOR_ROWS = 'dotcms.paginator.rows';
 const DOTCMS_PAGINATOR_LINKS = 'dotcms.paginator.links';
+const EMAIL_REGEX = 'emailRegex';
 
 export interface ConfigParams {
     disabledWebsockets: string;
@@ -33,6 +34,7 @@ export interface ConfigParams {
     paginatorRows: number;
     paginatorLinks: number;
     license: object;
+    emailRegex: string;
 }
 
 @Injectable()
@@ -84,7 +86,8 @@ export class DotcmsConfig {
                     websocketProtocol: res.config[DOTCMS_WEBSOCKET_PROTOCOL],
                     websocketReconnectTime: res.config[DOTCMS_WEBSOCKET_RECONNECT_TIME],
                     websocketsSystemEventsEndpoint:
-                        res.config[DOTCMS_WEBSOCKET_ENDPOINTS][WEBSOCKET_SYSTEMEVENTS_ENDPOINT]
+                        res.config[DOTCMS_WEBSOCKET_ENDPOINTS][WEBSOCKET_SYSTEMEVENTS_ENDPOINT],
+                    emailRegex: res.config[EMAIL_REGEX]
                 };
 
                 this.loggerService.debug('this.configParams', this.configParams);
