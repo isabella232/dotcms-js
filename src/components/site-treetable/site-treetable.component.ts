@@ -143,6 +143,6 @@ export class SiteTreeTableComponent {
     declarations: [SiteTreeTableComponent],
     exports: [SiteTreeTableComponent],
     imports: [CommonModule, TreeTableModule],
-    providers: [SiteBrowserState, SiteTreetableService, NotificationService]
+    providers: [SiteTreetableService, NotificationService]
 })
 export class DotSiteTreeTableModule { }

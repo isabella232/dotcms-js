@@ -4,7 +4,7 @@ import {HttpClient} from './http.service';
 import {Observable} from 'rxjs';
 import {Treeable} from '../treeable/shared/treeable.model';
 import {Folder} from '../treeable/shared/folder.model';
-import {File} from '../treeable/shared/file.model';
+import {File} from '../file/file.model';
 import {NotificationService} from './notification.service';
 import {ErrorObservable} from 'rxjs/observable/ErrorObservable';
 import {SiteBrowserState} from './site-browser.state';
@@ -27,7 +27,7 @@ export class SiteBrowserService {
     /**
      * Returns the Treeable assets (files, folders) under a host/folder
      * @param siteName dotCMS Site to load assets for
-     * @returns {Observable<R>} Gets the Treeable objects. If a file the Treeable will be File as File extends Treeable
+     * @returns {Observable<R>} Gets the Treeable objects. If a file the Treeable will be file as file extends Treeable
      */
     getTreeableAssetsUnderSite(siteName: String): Observable < Treeable[] > {
         return this.httpClient.get('/api/v1/browsertree/sitename/' + siteName + '/uri//')
@@ -39,7 +39,7 @@ export class SiteBrowserService {
      * Returns the Treeable assets (files, folders) under a host/folder
      * @param siteName dotCMS Site to load assets for
      * @param uri Path to load assets from
-     * @returns {Observable<R>} Gets the Treeable objects. If a file the Treeable will be File as File extends Treeable
+     * @returns {Observable<R>} Gets the Treeable objects. If a file the Treeable will be file as file extends Treeable
      */
     getTreeableAssetsUnderFolder(siteName: String, uri: String): Observable <Treeable[]> {
         return this.httpClient.get('/api/v1/browsertree/sitename/' + siteName + '/uri/' + uri)
@@ -76,7 +76,7 @@ export class SiteBrowserService {
 }
 
 @NgModule({
-  providers: [SiteBrowserService, HttpClient, NotificationService, SiteBrowserState]
+  providers: [SiteBrowserService, HttpClient, NotificationService]
 })
 export class DotSiteBrowserModule {
 }

@@ -1,4 +1,4 @@
-import {Treeable} from './treeable.model';
+import {Treeable} from '../treeable/shared/treeable.model';
 
 /**
  * Model object for the FileAsset Object in dotCMS.

@@ -88,6 +88,6 @@ export class JWTAuthService {
 }
 
 @NgModule({
-  providers: [JWTAuthService, Http, NotificationService, SettingsStorageService]
+  providers: [JWTAuthService]
 })
 export class DotJWTAuthModule {}

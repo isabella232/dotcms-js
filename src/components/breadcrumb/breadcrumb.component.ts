@@ -109,6 +109,6 @@ export class BreadcrumbComponent {
     declarations: [BreadcrumbComponent],
     exports: [BreadcrumbComponent],
     imports: [CommonModule, BreadcrumbModule],
-    providers: [SiteBrowserState]
+    providers: []
 })
 export class DotBreadcrumbModule { }

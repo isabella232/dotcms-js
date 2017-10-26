@@ -1,6 +1,7 @@
 // SERVICES
 export * from './core/util/app.config';
-export * from './core/util/file.services';
+export * from './core/file/file.services';
+export * from './core/file/file-search.service';
 export * from './core/util/http.service';
 export * from './core/util/jwt-auth.service';
 export * from './core/util/local-store.service';
@@ -33,7 +34,9 @@ export * from './core/util/websockets-protocol';
 
 // COMPONENTS
 export * from './components/breadcrumb/breadcrumb.component';
+export * from './components/breadcrumb/breadcrumb-hostselector.component';
 export * from './components/site-datatable/site-datatable.component';
+export * from './components/site-datagrid/site-datagrid.component';
 export * from './components/site-selector/site-selector.component';
 export * from './components/site-treetable/site-treetable.component';
 export * from './components/treeable-detail/treeable-detail.component';

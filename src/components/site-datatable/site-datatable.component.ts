@@ -8,7 +8,7 @@ import {NotificationService} from '../../core/util/notification.service';
 import {Folder} from '../../core/treeable/shared/folder.model';
 import {CommonModule} from '@angular/common';
 import {DataTableModule} from 'primeng/components/datatable/datatable';
-import {FileService} from '../../core/util/file.services';
+import {FileService} from '../../core/file/file.services';
 import {Site} from '../../core/treeable/shared/site.model';
 
 /**
@@ -180,6 +180,6 @@ export class SiteDatatableComponent {
     declarations: [SiteDatatableComponent],
     exports: [SiteDatatableComponent],
     imports: [CommonModule, DataTableModule],
-    providers: [SiteBrowserState, FileService, SiteBrowserService, SettingsStorageService, NotificationService]
+    providers: [FileService, SiteBrowserService, SettingsStorageService, NotificationService]
 })
 export class DotSiteDatatableModule { }

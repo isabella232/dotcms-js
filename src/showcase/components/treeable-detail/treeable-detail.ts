@@ -1,5 +1,5 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import {File} from "../../../core/treeable/shared/file.model";
+import {File} from "../../../core/file/file.model";
 import {SiteBrowserState} from "../../../core/util/site-browser.state";
 import {Treeable} from "../../../core/treeable/shared/treeable.model";
 

@@ -1,8 +1,9 @@
 import {Injectable, NgModule} from '@angular/core';
-import {NotificationService} from './notification.service';
-import {HttpClient} from './http.service';
+import {NotificationService} from '../util/notification.service';
+import {HttpClient} from '../util/http.service';
 import {Observable} from 'rxjs';
-import {SiteBrowserState} from './site-browser.state';
+import {SiteBrowserState} from '../util/site-browser.state';
+import {FileSearchService} from './file-search.service';
 
 /**
  * Can be used for CRUD operations on dotCMS FileAssets. Not all CRUD operations are currently implemented
@@ -17,19 +18,21 @@ export class FileService {
     }
 
     /**
-     * Will save an array of local files and upload them to dotCMS. The dotCMS File Object will be built by the upload method
+     * ******  NOT IMPLEMENTED YET *******
+     * Will save an array of local files and upload them to dotCMS. The dotCMS file Object will be built by the upload method
      * which means it will not set a Structure/Content Type and will not set the Identifier if the file already exists
      * in dotCMS.  dotCMS will create a new version if the file already exists on the uploaded path or create a new one.
      * The Structure/Content Type is set accordig to the default type on the uploaded dotCMS Folder
-     * @param fileList array of File objects to be POSTED to dotCMS
+     * @param fileList array of file objects to be POSTED to dotCMS
      */
+    // TODO : NOT IMPLEMENTED YET
     saveFiles(fileList: File[]): void {
 
     }
 
     /**
      * Will upload a local file to dotCMS
-     * @param file File from teh File System to upload
+     * @param file file from teh file System to upload
      * @param path dotCMS Path to upload file to
      */
     uploadFile(file: File, path: string, fileContentTypeID: string): void {
@@ -52,7 +55,7 @@ export class FileService {
     /**
      * Will post to dotCMS an array of the FolderNames to create. If the folder already exists nothing will happen.
      * Even if there are failure it will create the Folders it is able to and log any error on folders it could not create
-     * @param directories list of local File System directories to create on dotCMS
+     * @param directories list of local file System directories to create on dotCMS
      */
     // TODO : SHOULD MOVE TO FolderServices
     uploadDirectories(directories: File[]): void {
@@ -72,6 +75,6 @@ export class FileService {
 }
 
 @NgModule({
-  providers: [HttpClient, SiteBrowserState, NotificationService, FileService]
+  providers: [HttpClient, NotificationService, FileService, FileSearchService]
 })
 export class DotFileModule { }

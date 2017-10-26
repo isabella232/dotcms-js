@@ -85,6 +85,6 @@ export class SiteSelectorComponent {
     declarations: [SiteSelectorComponent],
     exports: [SiteSelectorComponent],
     imports: [CommonModule, FormsModule, InputTextModule, AutoCompleteModule],
-    providers: [SiteBrowserState, SiteSelectorService]
+    providers: [SiteSelectorService]
 })
 export class DotSiteSelectorModule { }

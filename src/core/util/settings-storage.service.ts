@@ -51,6 +51,6 @@ export class SettingsStorageService {
 }
 
 @NgModule({
-    providers: [AppConfig, LocalStoreService, SiteBrowserState, SettingsStorageService]
+    providers: [SiteBrowserState, AppConfig, LocalStoreService, SettingsStorageService]
 })
 export class DotSettingsStorageModule {}
