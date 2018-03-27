@@ -66,9 +66,7 @@ export class SiteService {
         // TODO the backend needs a change in the response 'data.data'.
         const siteIdentifier = eventTypeWrapper.data.data.identifier;
         if (siteIdentifier === this.selectedSite.identifier) {
-            if (eventTypeWrapper.eventType === 'ARCHIVE_SITE') {
-                this.getOneSite().subscribe(site => this.switchSite(site));
-            } else {
+            if (eventTypeWrapper.eventType !== 'ARCHIVE_SITE') {
                 this.loadCurrentSite();
             }
         }

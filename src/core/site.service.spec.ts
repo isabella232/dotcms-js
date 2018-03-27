@@ -82,41 +82,6 @@ describe('Site Service', () => {
         expect(currentSite).toEqual(this.siteService.currentSite);
     }));
 
-    it('should switch site when a ARCHIVE_SITE event happend', fakeAsync(() => {
-        let newCurrentSite: Site =  {
-            hostname: 'hostname2',
-            identifier: '6',
-            type: 'type2'
-        };
-
-        this.siteService.switchSite(currentSite);
-        respondSwitchSiteRequest.bind(this)();
-
-        let dotcmsEventsService: DotcmsEventsServiceMock = this.injector.get(DotcmsEventsService);
-
-        let data = {
-            data: {
-                data: {
-                    identifier: '5'
-                }
-            },
-            eventType: 'ARCHIVE_SITE'
-        };
-
-        dotcmsEventsService.tiggerSubscribeTo('ARCHIVE_SITE', data);
-        tick();
-        this.lastPaginateSiteConnection.mockRespond(new Response(new ResponseOptions({
-            body: JSON.stringify({
-                entity: [
-                    newCurrentSite
-                ]
-            })
-        })));
-        respondSwitchSiteRequest.bind(this)();
-
-        expect(newCurrentSite).toEqual(this.siteService.currentSite);
-    }));
-
     it('should refresh sites when an event happend', fakeAsync(() => {
         let events: string[] = ['SAVE_SITE', 'PUBLISH_SITE', 'UPDATE_SITE_PERMISSIONS', 'UN_ARCHIVE_SITE', 'UPDATE_SITE', 'ARCHIVE_SITE'];
         let dotcmsEventsService: DotcmsEventsServiceMock = this.injector.get(DotcmsEventsService);
