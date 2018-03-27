@@ -112,6 +112,21 @@ export class SiteService {
     }
 
     /**
+     * Get default site
+     *
+     * @returns {Observable<Site>}
+     * @memberof SiteService
+     */
+    getDefaultSite(): Observable<Site> {
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Put,
+                url: 'v1/site/switch'
+            })
+            .pluck('entity');
+    }
+
+    /**
      * Get a site by the id
      *
      * @param {string} id
