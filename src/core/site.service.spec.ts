@@ -5,15 +5,15 @@ import {
   ConnectionBackend,
 } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
-import { CoreWebService } from './core-web.service';
-// import { DOTTestBed } from '../../test/dot-test-bed';
+import { CoreWebService } from './core-web-service';
+import { DOTTestBed } from '../../test/dot-test-bed';
 import { RequestMethod } from '@angular/http';
-import { LoginService } from './login.service';
-import { DotcmsEventsService } from './dotcms-events.service';
-// import { DotcmsEventsServiceMock } from '../../test/dotcms-events.service.mock';
-// import { LoginServiceMock } from '../../test/login-service.mock';
-import { SiteService, Site } from './site.service';
-// import { Observable } from "rxjs/Observable";
+import { LoginService } from './login-service';
+import { DotcmsEventsService } from './dotcms-events-service';
+import { DotcmsEventsServiceMock } from '../../test/dotcms-events-service.mock';
+import { LoginServiceMock } from '../../test/login-service.mock';
+import { SiteService, Site } from './site-service';
+import { Observable } from "rxjs/Observable";
 
 describe('Site Service', () => {
     let currentSite: Site =  {
@@ -23,15 +23,16 @@ describe('Site Service', () => {
     };
 
     beforeEach(() => {
-        // this.injector = DOTTestBed.resolveAndCreate([
-        //     { provide: LoginService, useClass: LoginServiceMock },
-        //     { provide: DotcmsEventsService, useClass: DotcmsEventsServiceMock },
-        //     SiteService
-        // ]);
+        this.injector = DOTTestBed.resolveAndCreate([
+            { provide: LoginService, useClass: LoginServiceMock },
+            { provide: DotcmsEventsService, useClass: DotcmsEventsServiceMock },
+            SiteService
+        ]);
 
         this.siteService = this.injector.get(SiteService);
         this.backend = this.injector.get(ConnectionBackend) as MockBackend;
         this.backend.connections.subscribe((connection: any) => {
+            this.lastConnection = connection;
             let url = connection.request.url;
 
             if (url.indexOf('v1/site/currentSite') !== -1) {
@@ -49,7 +50,7 @@ describe('Site Service', () => {
     it('should tigger switchSite', fakeAsync(() => {
         let currentCounter = 5;
         let newCurrentSite: Site;
-        // let loginService: LoginServiceMock = this.injector.get(LoginService);
+        let loginService: LoginServiceMock = this.injector.get(LoginService);
 
         this.siteService.switchSite$.subscribe(site => newCurrentSite = site);
 
@@ -60,7 +61,7 @@ describe('Site Service', () => {
                 }
             };
 
-        // loginService.tiggerWatchUser();
+        loginService.tiggerWatchUser();
 
         this.lastCurrentSiteConnection.mockRespond(new Response(new ResponseOptions({
             body: JSON.stringify(mockResponse)
@@ -84,7 +85,7 @@ describe('Site Service', () => {
 
     it('should refresh sites when an event happend', fakeAsync(() => {
         let events: string[] = ['SAVE_SITE', 'PUBLISH_SITE', 'UPDATE_SITE_PERMISSIONS', 'UN_ARCHIVE_SITE', 'UPDATE_SITE', 'ARCHIVE_SITE'];
-        // let dotcmsEventsService: DotcmsEventsServiceMock = this.injector.get(DotcmsEventsService);
+        let dotcmsEventsService: DotcmsEventsServiceMock = this.injector.get(DotcmsEventsService);
         let siteService = this.injector.get(SiteService);
         let data = {
             data: {
@@ -101,7 +102,7 @@ describe('Site Service', () => {
 
         spyOn(siteService, 'siteEventsHandler');
 
-        // dotcmsEventsService.triggerSubscribeToEvents(events, data);
+        dotcmsEventsService.triggerSubscribeToEvents(events, data);
 
         tick();
 
@@ -123,6 +124,14 @@ describe('Site Service', () => {
                 ]
             })
         })));
+    });
+
+    it('should fire switchToDefaultSite', () => {
+        spyOn(this.siteService, 'switchToDefaultSite').and.callThrough();
+        this.siteService.switchToDefaultSite().subscribe();
+        expect(this.siteService.switchToDefaultSite).toHaveBeenCalledTimes(1);
+        expect(this.lastConnection.request.url).toContain(`v1/site/switch`);
+        expect(2).toBe(this.lastConnection.request.method); // 2 is a PUT method
     });
 
     function respondSwitchSiteRequest(): void {
