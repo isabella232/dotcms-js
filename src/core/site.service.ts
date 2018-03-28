@@ -112,12 +112,12 @@ export class SiteService {
     }
 
     /**
-     * Get default site
+     * Switch To Default Site in the BE and returns it.
      *
      * @returns {Observable<Site>}
      * @memberof SiteService
      */
-    getDefaultSite(): Observable<Site> {
+    switchToDefaultSite(): Observable<Site> {
         return this.coreWebService
             .requestView({
                 method: RequestMethod.Put,
