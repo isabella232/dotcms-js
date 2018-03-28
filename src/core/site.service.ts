@@ -66,9 +66,7 @@ export class SiteService {
         // TODO the backend needs a change in the response 'data.data'.
         const siteIdentifier = eventTypeWrapper.data.data.identifier;
         if (siteIdentifier === this.selectedSite.identifier) {
-            if (eventTypeWrapper.eventType === 'ARCHIVE_SITE') {
-                this.getOneSite().subscribe(site => this.switchSite(site));
-            } else {
+            if (eventTypeWrapper.eventType !== 'ARCHIVE_SITE') {
                 this.loadCurrentSite();
             }
         }
@@ -111,6 +109,21 @@ export class SiteService {
      */
     get currentSite(): Site {
         return this.selectedSite;
+    }
+
+    /**
+     * Switch To Default Site in the BE and returns it.
+     *
+     * @returns {Observable<Site>}
+     * @memberof SiteService
+     */
+    switchToDefaultSite(): Observable<Site> {
+        return this.coreWebService
+            .requestView({
+                method: RequestMethod.Put,
+                url: 'v1/site/switch'
+            })
+            .pluck('entity');
     }
 
     /**

@@ -32,6 +32,7 @@ describe('Site Service', () => {
         this.siteService = this.injector.get(SiteService);
         this.backend = this.injector.get(ConnectionBackend) as MockBackend;
         this.backend.connections.subscribe((connection: any) => {
+            this.lastConnection = connection;
             let url = connection.request.url;
 
             if (url.indexOf('v1/site/currentSite') !== -1) {
@@ -82,41 +83,6 @@ describe('Site Service', () => {
         expect(currentSite).toEqual(this.siteService.currentSite);
     }));
 
-    it('should switch site when a ARCHIVE_SITE event happend', fakeAsync(() => {
-        let newCurrentSite: Site =  {
-            hostname: 'hostname2',
-            identifier: '6',
-            type: 'type2'
-        };
-
-        this.siteService.switchSite(currentSite);
-        respondSwitchSiteRequest.bind(this)();
-
-        let dotcmsEventsService: DotcmsEventsServiceMock = this.injector.get(DotcmsEventsService);
-
-        let data = {
-            data: {
-                data: {
-                    identifier: '5'
-                }
-            },
-            eventType: 'ARCHIVE_SITE'
-        };
-
-        dotcmsEventsService.tiggerSubscribeTo('ARCHIVE_SITE', data);
-        tick();
-        this.lastPaginateSiteConnection.mockRespond(new Response(new ResponseOptions({
-            body: JSON.stringify({
-                entity: [
-                    newCurrentSite
-                ]
-            })
-        })));
-        respondSwitchSiteRequest.bind(this)();
-
-        expect(newCurrentSite).toEqual(this.siteService.currentSite);
-    }));
-
     it('should refresh sites when an event happend', fakeAsync(() => {
         let events: string[] = ['SAVE_SITE', 'PUBLISH_SITE', 'UPDATE_SITE_PERMISSIONS', 'UN_ARCHIVE_SITE', 'UPDATE_SITE', 'ARCHIVE_SITE'];
         let dotcmsEventsService: DotcmsEventsServiceMock = this.injector.get(DotcmsEventsService);
@@ -158,6 +124,14 @@ describe('Site Service', () => {
                 ]
             })
         })));
+    });
+
+    it('should fire switchToDefaultSite', () => {
+        spyOn(this.siteService, 'switchToDefaultSite').and.callThrough();
+        this.siteService.switchToDefaultSite().subscribe();
+        expect(this.siteService.switchToDefaultSite).toHaveBeenCalledTimes(1);
+        expect(this.lastConnection.request.url).toContain(`v1/site/switch`);
+        expect(2).toBe(this.lastConnection.request.method); // 2 is a PUT method
     });
 
     function respondSwitchSiteRequest(): void {
