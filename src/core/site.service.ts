@@ -160,8 +160,11 @@ export class SiteService {
     }
 
     private setCurrentSite(site: Site): void {
+        if (this.selectedSite) {
+            this._switchSite$.next(Object.assign({}, site));
+        }
+
         this.selectedSite = site;
-        this._switchSite$.next(Object.assign({}, site));
     }
 
     private loadCurrentSite(): void {
