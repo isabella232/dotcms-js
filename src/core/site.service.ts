@@ -3,7 +3,7 @@ import { CoreWebService } from './core-web.service';
 import { Observable } from 'rxjs/Rx';
 import { RequestMethod } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
-import { LoginService } from './login.service';
+import { LoginService, Auth } from './login.service';
 import { DotcmsEventsService } from './dotcms-events.service';
 import { LoggerService } from './logger.service';
 
@@ -48,7 +48,11 @@ export class SiteService {
             .subscribeToEvents(this.events)
             .subscribe(data => this.siteEventsHandler(data));
 
-        loginService.watchUser(this.loadCurrentSite.bind(this));
+        loginService.watchUser((auth: Auth) => {
+            if (!auth.isLoginAs) {
+                this.loadCurrentSite();
+            }
+        });
     }
 
     /**

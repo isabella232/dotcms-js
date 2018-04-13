@@ -156,7 +156,8 @@ export class LoginService {
 
                 this.setAuth({
                     loginAsUser: userData.user,
-                    user: this._auth.user
+                    user: this._auth.user,
+                    isLoginAs: true
                 });
                 return res;
             })
@@ -194,7 +195,8 @@ export class LoginService {
             .map(response => {
                 const auth = {
                     loginAsUser: null,
-                    user: response.entity
+                    user: response.entity,
+                    isLoginAs: false
                 };
 
                 this.setAuth(auth);
@@ -218,7 +220,8 @@ export class LoginService {
             .map(res => {
                 this.setAuth({
                     loginAsUser: null,
-                    user: this._auth.user
+                    user: this._auth.user,
+                    isLoginAs: true
                 });
                 return res;
             });
@@ -237,7 +240,8 @@ export class LoginService {
             .map(response => {
                 const nullAuth = {
                     loginAsUser: null,
-                    user: null
+                    user: null,
+                    isLoginAs: false
                 };
 
                 this.loggerService.debug('Processing the logOutUser');
@@ -371,4 +375,5 @@ export interface User {
 export interface Auth {
     user: User;
     loginAsUser: User;
+    isLoginAs?: boolean;
 }
