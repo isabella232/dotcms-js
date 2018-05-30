@@ -48,10 +48,6 @@ export class LoginService {
         dotcmsEventsService.subscribeTo('SESSION_DESTROYED').pluck('data').subscribe(date => {
             this.loggerService.debug('Processing session destroyed: ', date);
             this.loggerService.debug('User Logged In Date: ', this.auth.user.loggedInDate);
-            // if the destroyed event happens after the logged in date, so proceed!
-            if (this.isLogoutAfterLastLogin(date)) {
-                this.logOutUser().subscribe(() => {});
-            }
         });
     }
 
