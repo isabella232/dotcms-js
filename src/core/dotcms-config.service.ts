@@ -24,17 +24,18 @@ const DOTCMS_PAGINATOR_LINKS = 'dotcms.paginator.links';
 const EMAIL_REGEX = 'emailRegex';
 
 export interface ConfigParams {
+    colors: object;
     disabledWebsockets: string;
-    websocketReconnectTime: number;
-    websocketEndpoints: string;
-    websocketsSystemEventsEndpoint: string;
-    websocketBaseURL: string;
-    websocketProtocol: string;
-    menu: Menu[];
-    paginatorRows: number;
-    paginatorLinks: number;
-    license: object;
     emailRegex: string;
+    license: object;
+    menu: Menu[];
+    paginatorLinks: number;
+    paginatorRows: number;
+    websocketBaseURL: string;
+    websocketEndpoints: string;
+    websocketProtocol: string;
+    websocketReconnectTime: number;
+    websocketsSystemEventsEndpoint: string;
 }
 
 @Injectable()
@@ -76,7 +77,9 @@ export class DotcmsConfig {
                 this.loggerService.debug('Configuration Loaded!', res);
 
                 this.configParams = {
+                    colors: res.config.colors,
                     disabledWebsockets: res.config[DOTCMS_DISABLE_WEBSOCKET_PROTOCOL],
+                    emailRegex: res.config[EMAIL_REGEX],
                     license: res.config.license,
                     menu: res.menu,
                     paginatorLinks: res.config[DOTCMS_PAGINATOR_LINKS],
@@ -85,9 +88,7 @@ export class DotcmsConfig {
                     websocketEndpoints: res.config[DOTCMS_WEBSOCKET_ENDPOINTS],
                     websocketProtocol: res.config[DOTCMS_WEBSOCKET_PROTOCOL],
                     websocketReconnectTime: res.config[DOTCMS_WEBSOCKET_RECONNECT_TIME],
-                    websocketsSystemEventsEndpoint:
-                        res.config[DOTCMS_WEBSOCKET_ENDPOINTS][WEBSOCKET_SYSTEMEVENTS_ENDPOINT],
-                    emailRegex: res.config[EMAIL_REGEX]
+                    websocketsSystemEventsEndpoint: res.config[DOTCMS_WEBSOCKET_ENDPOINTS][WEBSOCKET_SYSTEMEVENTS_ENDPOINT]
                 };
 
                 this.loggerService.debug('this.configParams', this.configParams);
