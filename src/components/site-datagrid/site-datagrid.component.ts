@@ -17,7 +17,7 @@ import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'site-datagrid',
-  styles: [require('./../app.css')],
+  styleUrls: ['../app.css'],
   template: `
     <p-dataGrid [value]="treeables" [paginator]="true" [rows]="20" [alwaysShowPaginator]="false">
       <ng-template let-treeable pTemplate="item">

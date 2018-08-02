@@ -1,8 +1,8 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import {SiteBrowserState} from "../../../core/util/site-browser.state";
+import {SiteBrowserState} from '../../../core/util/site-browser.state';
 
 @Component({
-    template: require('./breadcrumb.html'),
+    templateUrl: './breadcrumb.html',
     encapsulation: ViewEncapsulation.None,
 
 })

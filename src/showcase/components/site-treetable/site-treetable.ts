@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
-    template: require('./site-treetable.html'),
+    templateUrl: './site-treetable.html',
     encapsulation: ViewEncapsulation.None,
 
 })

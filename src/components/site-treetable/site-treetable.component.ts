@@ -10,9 +10,9 @@ import {Site} from '../../core/treeable/shared/site.model';
 
 @Component({
     selector: 'site-treetable',
-    styles: [require('./../app.css')],
+    styleUrls: ['../app.css'],
     template: `<div class="ContentSideSections Implementation"
-                    (drop)="handleDrop($event, p-column)" (dragover)="handleDragOver($event)">
+                    (drop)="handleDrop($event)" (dragover)="handleDragOver($event)">
         <p-treeTable [value]="lazyFiles" [(selection)]="selectedNode" [style]="&#123;'margin-top':'30px'&#125;"
                      (onNodeExpand)="nodeExpand($event)" selectionMode="single">
             <p-column class="browser-dropzone" field="title" header="Name"></p-column>
@@ -65,11 +65,11 @@ export class SiteTreeTableComponent {
     handleDrop(e: any): void {
         e.preventDefault();
         let pathToUploadTo: string;
-        let files: any[] = e.dataTransfer.files;
-        let folderTitle: string = e.path[0].innerText;
+        const files: any[] = e.dataTransfer.files;
+        const folderTitle: string = e.path[0].innerText;
 
         for (let i = 0; i < this.lazyFiles.length; i++) {
-            let node: TreeNode = this.lazyFiles[i];
+            const node: TreeNode = this.lazyFiles[i];
             if (node.data.title === folderTitle && node.data.type === 'folder') {
                 pathToUploadTo = node.data.path;
                 break;

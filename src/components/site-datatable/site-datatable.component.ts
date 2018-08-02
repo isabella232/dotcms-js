@@ -19,8 +19,8 @@ import {Site} from '../../core/treeable/shared/site.model';
  */
 @Component({
     selector: 'site-datatable',
-    styles: [require('./../app.css')],
-    template: `<div (drop)="handleDrop($event, p-column)" (dragover)="handleDragOver($event)">
+    styleUrls: ['../app.css'],
+    template: `<div (drop)="handleDrop($event)" (dragover)="handleDragOver($event)">
         <p-dataTable [value]="treeables" selectionMode="single"
                      (onRowDblclick)="doubleClick($event)" (onRowSelect)="selectTreeable($event)">
             <p-column class="browser-dropzone" field="title" header="Name" [sortable]="true">
@@ -103,7 +103,7 @@ export class SiteDatatableComponent {
         pathName = pathName.slice(pathName.lastIndexOf('/') + 1, pathName.length);
         this.updateService.changeFolder(pathName);
         this.updateService.changeURI(event.data.path);
-        let folder: Folder = event.data;
+        const folder: Folder = event.data;
         let uri = this.updateService.getURI();
         if (!uri) {uri = ''; }
         this.loadFolder(folder.path);
@@ -151,12 +151,12 @@ export class SiteDatatableComponent {
         e.preventDefault();
         let pathToUploadTo: string;
         let fileContentTypeID: string;
-        let dataTrans: any =  e.dataTransfer;
-        let fileName: string =  e.dataTransfer.files[0].name;
-        let files: File[] = e.dataTransfer.files;
-        let folderTitle: string = e.path[0].innerText.trim();
+        const dataTrans: any =  e.dataTransfer;
+        const fileName: string =  e.dataTransfer.files[0].name;
+        const files: File[] = e.dataTransfer.files;
+        const folderTitle: string = e.path[0].innerText.trim();
         for (let i = 0; i < this.treeables.length; i++) {
-            let node: Treeable = this.treeables[i];
+            const node: Treeable = this.treeables[i];
             if (node.title === folderTitle && node.type === 'folder') {
                 pathToUploadTo = (<Folder> node).path;
                 fileContentTypeID = (<Folder> node).defaultFileType;
@@ -164,7 +164,7 @@ export class SiteDatatableComponent {
             }
         }
         for (let i = 0; i < files.length; i++) {
-            let file: File = files[i];
+            const file: File = files[i];
             if (fileContentTypeID == null || fileContentTypeID.trim() === '') {
                 console.error('st inode is empty');
             }

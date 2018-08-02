@@ -11,7 +11,7 @@ import {FormsModule} from '@angular/forms';
 @Inject('updateService')
 @Component({
     selector: 'site-selector',
-    styles: [require('./../app.css')],
+    styleUrls: ['../app.css'],
     template: `<div>
         <p-autoComplete [(ngModel)]="host" [suggestions]="filteredHosts" (completeMethod)="filterHosts($event)"
                         [size]="30"
@@ -60,7 +60,7 @@ export class SiteSelectorComponent {
     /**
      * Is called when the user clicks to view all sites in the dropdown
      */
-    handleDropdownClick(): void {
+    handleDropdownClick($event): void {
         this.filteredHosts = [];
         this.siteSelectorService.getSites()
             .subscribe((sites: Site[]) => this.handleSiteResults(sites));

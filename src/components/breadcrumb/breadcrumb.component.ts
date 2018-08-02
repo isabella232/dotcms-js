@@ -12,13 +12,13 @@ import {Site} from '../../core/treeable/shared/site.model';
  */
 @Component({
     selector: 'breadcrumb',
-    styles: [require('./../app.css')],
+    styleUrls: ['../app.css'],
     template: `<p-breadcrumb [model]="pathItems"></p-breadcrumb>`
 })
 @Inject('updateService')
 export class BreadcrumbComponent {
 
-    protected pathItems: MenuItem[];
+    pathItems: MenuItem[];
 
     constructor(private updateService: SiteBrowserState) {
         this.buildMenuItemsFromURI(this.updateService.getURI());
@@ -53,14 +53,14 @@ export class BreadcrumbComponent {
         if (!folderName) {
             return;
         }
-        let uri: string = this.getCurrentURI() + '/' + folderName;
+        const uri: string = this.getCurrentURI() + '/' + folderName;
         this.addFolderItem(folderName);
     }
 
     private getCurrentURI(): string {
         let uri = '';
         for (let i = 1; i < this.pathItems.length; i++) {
-            let pi: MenuItem = this.pathItems[i];
+            const pi: MenuItem = this.pathItems[i];
             uri = uri + '/' + pi.label;
         }
         return uri;
@@ -79,7 +79,7 @@ export class BreadcrumbComponent {
     }
 
     private addFolderItem(folderName: string): void {
-        let currentURI: string = this.getCurrentURI();
+        const currentURI: string = this.getCurrentURI();
         this.pathItems.push({
             command: (event: Event) => {
                 this.updateService.changeURI(currentURI + '/' + folderName);
@@ -91,13 +91,13 @@ export class BreadcrumbComponent {
 
     private buildMenuItemsFromURI(uri: string): void {
         this.pathItems = [];
-        let site: Site = this.updateService.getSelectedSite();
+        const site: Site = this.updateService.getSelectedSite();
         if (!site || !site.hostname) {
             return;
         }
         this.addSiteItem(site);
         if (uri) {
-            let folders: string[] = uri.split('/');
+            const folders: string[] = uri.split('/');
             for (let i = 0; i < folders.length; i++) {
                 this.onFolderClick(folders[i]);
             }
