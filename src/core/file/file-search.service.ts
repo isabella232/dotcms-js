@@ -1,23 +1,21 @@
-import {Inject, Injectable} from '@angular/core';
-import {ErrorObservable} from 'rxjs/observable/ErrorObservable';
-import {Observable} from 'rxjs/Observable';
+import { Inject, Injectable } from '@angular/core';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { Observable } from 'rxjs/Observable';
 
-import {Response} from '@angular/http';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {HttpClient} from '../util/http.service';
-import {Treeable} from '../treeable/shared/treeable.model';
-import {File} from './file.model';
+import { Response } from '@angular/http';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { HttpClient } from '../util/http.service';
+import { Treeable } from '../treeable/shared/treeable.model';
+import { File } from './file.model';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 @Inject('httpClient')
 export class FileSearchService {
-
   searchQuery: Observable<string>;
   private searchQuerySubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-  constructor(
-    private httpClient: HttpClient
-  ) {
+  constructor(private httpClient: HttpClient) {
     this.searchQuery = this.searchQuerySubject.asObservable();
   }
 
@@ -25,13 +23,14 @@ export class FileSearchService {
     this.searchQuerySubject.next(query);
   }
   getSearchQuery(): string {
-    return <string> this.searchQuerySubject.getValue();
+    return <string>this.searchQuerySubject.getValue();
   }
 
-  search(query: string): Observable < Treeable[] > {
-    return this.httpClient.get('/api/content/render/false/query/' + query)
-      .map((res: Response) => this.extractDataFilter(res))
-      .catch(error => this.handleError(error));
+  search(query: string): Observable<Treeable[]> {
+    return this.httpClient.get('/api/content/render/false/query/' + query).pipe(
+      map((res: Response) => this.extractDataFilter(res)),
+      // catchError(error => this.handleError(error))
+    );
   }
 
   private extractDataFilter(res: Response): Treeable[] {
@@ -50,14 +49,16 @@ export class FileSearchService {
     return treeables;
   }
 
-  private handleError(error: any): ErrorObservable {
-    const errMsg = (error.message) ? error.message :
-      error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+  private handleError(error: any): ErrorObservable<string> {
+    const errMsg = error.message
+      ? error.message
+      : error.status
+        ? `${error.status} - ${error.statusText}`
+        : 'Server error';
     if (errMsg) {
       // this.log.error(errMsg);
       console.error('There was an error; please try again : ' + errMsg);
       return Observable.throw(errMsg);
     }
   }
-
 }

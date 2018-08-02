@@ -24,6 +24,8 @@ import { LoggerService } from './logger.service';
 import { BrowserUtil } from './browser-util.service';
 import { HttpCode } from './util/http-code';
 
+import { map, catchError } from 'rxjs/operators';
+
 export const RULE_CREATE = 'RULE_CREATE';
 export const RULE_DELETE = 'RULE_DELETE';
 export const RULE_UPDATE_NAME = 'RULE_UPDATE_NAME';
@@ -126,18 +128,20 @@ export class CoreWebService {
         const request = this.getRequestOpts(options);
 
         return this._http.request(request)
-            .map(resp => {
+          .pipe(
+            map(resp => {
                 if (resp.json().errors && resp.json().errors.length > 0) {
                     return this.handleRequestViewErrors(resp);
                 } else {
                     return new ResponseView(resp);
                 }
-            })
-            .catch(this.handleRequestViewErrors);
+            }),
+            // catchError(this.handleRequestViewErrors)
+          );
     }
 
-    private handleRequestViewErrors(resp) {
-        return Observable.throw(new ResponseView(resp));
+    private handleRequestViewErrors(resp): ResponseView {
+        return new ResponseView(resp);
     }
 
     public subscribeTo(httpErrorCode: number): Observable<any> {

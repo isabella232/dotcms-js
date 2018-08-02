@@ -5,6 +5,7 @@ import {HttpClient} from '../../core/util/http.service';
 import {NotificationService} from '../../core/util/notification.service';
 import {Site} from '../../core/treeable/shared/site.model';
 import {ErrorObservable} from 'rxjs/observable/ErrorObservable';
+import { map, catchError } from 'rxjs/operators';
 
 @Injectable()
 @Inject('dotHttpClient')
@@ -24,8 +25,10 @@ export class SiteSelectorService {
      */
     filterForSites(searchQuery: string): Observable<Site[]> {
     return this.dotHttpClient.get('/api/v1/site?filter=' + searchQuery + '&archived=false')
-        .map((res: Response) => this.extractDataFilter(res))
-        .catch(err => this.handleError(err));
+      .pipe(
+        map((res: Response) => this.extractDataFilter(res)),
+        // catchError(err => this.handleError(err))
+      );
     }
 
     /**
@@ -34,12 +37,14 @@ export class SiteSelectorService {
      */
     getSites(): Observable<Site[]> {
         return this.dotHttpClient.get('/api/v1/site/')
-            .map((res: Response) => this.extractDataDropdown(res))
-            .catch(err => this.handleError(err));
+        .pipe(
+          map((res: Response) => this.extractDataDropdown(res)),
+          // catchError(err => this.handleError(err))
+        );
     }
 
     private extractDataDropdown(res: Response): Site[] {
-        let obj = JSON.parse(res.text());
+        const obj = JSON.parse(res.text());
         if (obj.entity.sites && obj.entity.sites.results && obj.entity.sites.results.length > 0) {
             return obj.entity.sites.results;
         }
@@ -47,13 +52,13 @@ export class SiteSelectorService {
     }
 
     private extractDataFilter(res: Response): Site[] {
-        let obj = JSON.parse(res.text());
+        const obj = JSON.parse(res.text());
         return obj.entity;
     }
 
-    private handleError(error: any): ErrorObservable {
+    private handleError(error: any): ErrorObservable<string> {
         // we need use a remote logging infrastructure at some point
-        let errMsg = (error.message) ? error.message :
+        const errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         if (errMsg) {
             console.log(errMsg);

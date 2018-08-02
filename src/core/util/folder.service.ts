@@ -5,6 +5,7 @@ import {Inject, Injectable, NgModule} from '@angular/core';
 import {Folder} from '../treeable/shared/folder.model';
 import {Observable} from 'rxjs/Observable';
 import {ErrorObservable} from 'rxjs/observable/ErrorObservable';
+import { map, catchError } from 'rxjs/operators';
 
 /**
  * Service allows opertions against dotCMS Folder Endpoints and Operations
@@ -24,21 +25,23 @@ export class FolderService {
      * @param {String} siteName The site name for the uri/folder
      * @param {String} uri The folder path
      */
-    loadFolderByURI(siteName: String, uri: String): Observable <Folder> {
+    loadFolderByURI(siteName: String, uri: String): Observable<Folder> {
         return this.httpClient.get('/api/v1/folder/sitename/' + siteName + '/uri/' + uri)
-            .map((res: Response) => this.extractDataFilter(res))
-            .catch(error => this.handleError(error));
+        .pipe(
+          map((res: Response) => this.extractDataFilter(res)),
+          // catchError(error => this.handleError(error))
+        );
     }
 
     private extractDataFilter(res: Response): Folder {
         let folder: Folder;
-        let obj = JSON.parse(res.text());
-        let result: Folder = Object.assign(new Folder(), obj.entity);
+        const obj = JSON.parse(res.text());
+        const result: Folder = Object.assign(new Folder(), obj.entity);
         return result;
     }
 
-    private handleError(error: any): ErrorObservable {
-        let errMsg = (error.message) ? error.message :
+    private handleError(error: any): ErrorObservable<string> {
+        const errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         if (errMsg) {
             console.log(errMsg);

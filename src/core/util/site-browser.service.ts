@@ -7,7 +7,7 @@ import {Folder} from '../treeable/shared/folder.model';
 import {File} from '../file/file.model';
 import {NotificationService} from './notification.service';
 import {ErrorObservable} from 'rxjs/observable/ErrorObservable';
-import {SiteBrowserState} from './site-browser.state';
+import { map, catchError } from 'rxjs/operators';
 
 /**
  * SiteBrowserService will allows operations against the set dotCMS Site/Host for Tree operations. Treeable assets
@@ -29,10 +29,12 @@ export class SiteBrowserService {
      * @param siteName dotCMS Site to load assets for
      * @returns {Observable<R>} Gets the Treeable objects. If a file the Treeable will be file as file extends Treeable
      */
-    getTreeableAssetsUnderSite(siteName: String): Observable < Treeable[] > {
+    getTreeableAssetsUnderSite(siteName: String): Observable<Treeable[] > {
         return this.httpClient.get('/api/v1/browsertree/sitename/' + siteName + '/uri//')
-            .map((res: Response) => this.extractDataFilter(res))
-            .catch(error => this.handleError(error));
+          .pipe(
+            map((res: Response) => this.extractDataFilter(res)),
+            // catchError(error => this.handleError(error))
+          );
     }
 
     /**
@@ -41,18 +43,20 @@ export class SiteBrowserService {
      * @param uri Path to load assets from
      * @returns {Observable<R>} Gets the Treeable objects. If a file the Treeable will be file as file extends Treeable
      */
-    getTreeableAssetsUnderFolder(siteName: String, uri: String): Observable <Treeable[]> {
+    getTreeableAssetsUnderFolder(siteName: String, uri: String): Observable<Treeable[]> {
         return this.httpClient.get('/api/v1/browsertree/sitename/' + siteName + '/uri/' + uri)
-            .map((res: Response) => this.extractDataFilter(res))
-            .catch(error => this.handleError(error));
+            .pipe(
+              map((res: Response) => this.extractDataFilter(res)),
+              // catchError(error => this.handleError(error))
+            );
     }
 
     private extractDataFilter(res: Response): Treeable[] {
-        let treeables: Treeable[] = [];
-        let obj = JSON.parse(res.text());
-        let results: any[] = obj.entity.result;
+        const treeables: Treeable[] = [];
+        const obj = JSON.parse(res.text());
+        const results: any[] = obj.entity.result;
         for (let i = 0; i < results.length; i++) {
-            let r: any = results[i];
+            const r: any = results[i];
             let t: Treeable;
             if (r.type === 'folder') {
                 t = Object.assign(new Folder(), r);
@@ -64,8 +68,8 @@ export class SiteBrowserService {
         return treeables;
     }
 
-    private handleError(error: any): ErrorObservable {
-        let errMsg = (error.message) ? error.message :
+    private handleError(error: any): ErrorObservable<string> {
+        const errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         if (errMsg) {
             console.error(errMsg);
