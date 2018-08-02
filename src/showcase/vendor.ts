@@ -1,4 +1,3 @@
-// import 'angular2-logger/core';
 import '@angular/platform-browser';
 import '@angular/platform-browser-dynamic';
 import '@angular/core';

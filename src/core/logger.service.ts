@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Logger } from 'angular2-logger/core';
-import { Config } from './config.service';
 import { StringUtils } from './string-utils.service';
 import { environment } from '../environments/environment';
 import { HttpRequestUtils } from './util/http-request-utils';
@@ -15,46 +13,48 @@ export class LoggerService {
     private showLogs = true;
     private httpRequestUtils: HttpRequestUtils;
 
-    constructor(private config: Config, private logger: Logger, private stringUtils: StringUtils) {
-        logger.info('Setting the logger...');
+    constructor(private stringUtils: StringUtils) {
+
+        // tslint:disable:no-console
+        console.info('Setting the logger...');
         this.httpRequestUtils = new HttpRequestUtils();
         this.showLogs = this.shouldShowLogs();
 
         if (this.showLogs) {
-            logger.info('Developer mode logger on');
-            logger.level = logger.Level.LOG;
+          console.info('Developer mode logger on');
         }
     }
 
     info(message?: any, ...optionalParams: any[]): void {
         if (optionalParams && optionalParams.length > 0) {
-            this.logger.info(this.wrapMessage(message), optionalParams);
+
+            console.info(this.wrapMessage(message), optionalParams);
         } else {
-            this.logger.info(this.wrapMessage(message));
+            console.info(this.wrapMessage(message));
         }
     }
 
     error(message?: any, ...optionalParams: any[]): void {
         if (optionalParams && optionalParams.length > 0) {
-            this.logger.error(this.wrapMessage(message), optionalParams);
+            console.error(this.wrapMessage(message), optionalParams);
         } else {
-            this.logger.error(this.wrapMessage(message));
+            console.error(this.wrapMessage(message));
         }
     }
 
     warn(message?: any, ...optionalParams: any[]): void {
         if (optionalParams && optionalParams.length > 0) {
-            this.logger.warn(this.wrapMessage(message), optionalParams);
+            console.warn(this.wrapMessage(message), optionalParams);
         } else {
-            this.logger.warn(this.wrapMessage(message));
+            console.warn(this.wrapMessage(message));
         }
     }
 
     debug(message?: any, ...optionalParams: any[]): void {
         if (optionalParams && optionalParams.length > 0) {
-            this.logger.debug(this.wrapMessage(message), optionalParams);
+            console.debug(this.wrapMessage(message), optionalParams);
         } else {
-            this.logger.debug(this.wrapMessage(message));
+            console.debug(this.wrapMessage(message));
         }
     }
 
