@@ -23,6 +23,7 @@ import { ResponseView } from './util/response-view';
 import { LoggerService } from './logger.service';
 import { BrowserUtil } from './browser-util.service';
 import { HttpCode } from './util/http-code';
+import { Router } from '@angular/router';
 
 export const RULE_CREATE = 'RULE_CREATE';
 export const RULE_DELETE = 'RULE_DELETE';
@@ -56,7 +57,8 @@ export class CoreWebService {
         private _apiRoot: ApiRoot,
         private _http: Http,
         private loggerService: LoggerService,
-        private browserUtil: BrowserUtil
+        private browserUtil: BrowserUtil,
+        private router: Router
     ) {}
 
     request(options: any): Observable<any> {
@@ -133,10 +135,14 @@ export class CoreWebService {
                     return new ResponseView(resp);
                 }
             })
-            .catch(this.handleRequestViewErrors);
+            .catch(this.handleRequestViewErrors.bind(this));
     }
 
-    private handleRequestViewErrors(resp) {
+    private handleRequestViewErrors(resp: Response) {
+        if (resp.status === 401) {
+          this.router.navigate(['/public/login']);
+        }
+
         return Observable.throw(new ResponseView(resp));
     }
 
